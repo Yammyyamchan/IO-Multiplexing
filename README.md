@@ -18,7 +18,7 @@
 명령어 개수만큼 반복을 해서 명령어를 입력받는다.
 
 ---  
-[Server]  
+[Server]  (라즈베리파이)
 
 ![스크린샷 2024-01-01 23-22-30](https://github.com/Yammyyamchan/IO-Multiplexing-/assets/131407815/b1dbbf49-4d3a-4b8a-a938-96a2293dc172)
 
@@ -27,3 +27,12 @@
 
 ---  
 [실행 결과]  
+
+![캡처1](https://github.com/Yammyyamchan/IO-Multiplexing-/assets/131407815/e462ba12-0d09-43b5-bffc-a82f903b5c01)
+
+![캡처2](https://github.com/Yammyyamchan/IO-Multiplexing-/assets/131407815/7df8504a-f938-4a64-b55c-82076b02c5b1)
+
+
+-왼쪽은 putty를 이용해 라즈베리파이가 Server프로그램 실행. 오른쪽은 2개의 Client가 라즈베리파이 Server에 접속함.  
+-select()함수를 이용해서 하나의 프로세스가 동시에 두개이상의 클라이언트에게 서비스제공.  
+-Client가 메시지를 라즈베리파이에게 보내면, 라즈베리파이는 메시지를 읽어들이고 명령어를 실행시킴.
