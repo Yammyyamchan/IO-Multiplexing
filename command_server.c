@@ -14,7 +14,7 @@ void error_handling(char* message)
     fputc('\n',stderr);
     exit(1);
 }
-void cmdexe(int sock,int cmd_cnt,char* buf);
+void cmdexe(int cmd_cnt,char* buf);
 
 int main(int argc,char**argv)
 {
@@ -78,10 +78,10 @@ int main(int argc,char**argv)
                     if(maxfd<clnt_sock)
                         maxfd=clnt_sock;
                 }
-                else
-                {
-                    len=read(i,msg,MAX_SIZE);
-                    if(len==0)
+                else        
+                {                                                 // select()함수 호출후 clnt_sock이 변화가 생겻으면
+                    len=read(i,msg,MAX_SIZE);                         
+                    if(len==0)                                        
                     {
                         FD_CLR(i,&reads);
                         printf("closed client: %d \n",i);
@@ -89,9 +89,9 @@ int main(int argc,char**argv)
                     }
                     else
                     {
-                       cmd_cnt=msg[0];
+                       cmd_cnt=msg[0];                                 //명령어의 개수를 저장한다.
                        printf("===============================\n");
-                       cmdexe(i,cmd_cnt,&msg[1]);
+                       cmdexe(cmd_cnt,&msg[1]);                        //메시지를 처리하는 함수호출
                        printf("Received from client: %d \n",i);
                        printf("===============================\n");
                     }
@@ -105,21 +105,21 @@ int main(int argc,char**argv)
     return 0;
 }
 
-void cmdexe(int sock,int cmd_cnt,char* buf)
+void cmdexe(int cmd_cnt,char* buf)
 {
     int pos=0;
     int i,cmd_len;
     char cmd[64];
-    int sock_num=sock;
     
-    for(i=0;i<cmd_cnt;i++)
+    
+    for(i=0;i<cmd_cnt;i++)                  //명령어의 개수만큼 반복문돌림
     {
-        cmd_len=buf[pos++];
-        strncpy(cmd,&buf[pos],cmd_len);
-        pos+=cmd_len;
-        cmd[cmd_len]='\0';
+        cmd_len=buf[pos++];                 //명령어의 길이 저장
+        strncpy(cmd,&buf[pos],cmd_len);     // cmd에 명령어 길이만큼 저장
+        pos+=cmd_len;                       // 메시지 인덱스값 증가시킴
+        cmd[cmd_len]='\0';                  //system()함수 인자에 전달할 명령어의 끝을 알리기 위해
         printf("%s\n",cmd);
-        system(cmd);
+        system(cmd);                        //간단한 쉘 명령어 실행 결과 화면에 출력
         printf("\n");
     }
    
